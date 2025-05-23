@@ -6,14 +6,15 @@ public class ItemController : MonoBehaviour
 {
     [SerializeField] private AudioSource soundBubble;
     [SerializeField] private List<Figure> figures;
-    private void OnEnable()
+    [SerializeField] private float delayAnimationDead = 0.2f;
+    private void Start()
     {
-        ItemÑollector.instance.collect += GetFigure;
+        ItemÑollector.instance.onCollect += GetFigure;
     }
-    private void GetFigure(GameObject item)
+    private void GetFigure(Figure item)
     {
         figures.RemoveAll(item => item == null);
-        figures.Add(item.GetComponent<Figure>());
+        figures.Add(item);
         MatchChecking();
     }
     private void MatchChecking()
@@ -43,7 +44,8 @@ public class ItemController : MonoBehaviour
     }
     private IEnumerator RemoveObjects(Vector3 combination)
     {
-        yield return new WaitForSeconds(0.3f);
+        var wait = new WaitForSeconds(delayAnimationDead);
+        yield return wait;
         for (int i = 0; i < figures.Count; i++)
         {
             if (figures[i].combination == combination)
@@ -52,13 +54,13 @@ public class ItemController : MonoBehaviour
                 figures.Remove(figures[i]);
                 i--;
                 soundBubble.Play();
-                yield return new WaitForSeconds(0.2f);
+                yield return wait;
             }
         }
     }
     private void OnDisable()
     {
-        ItemÑollector.instance.collect -= GetFigure;
+        ItemÑollector.instance.onCollect -= GetFigure;
     }
 
 }

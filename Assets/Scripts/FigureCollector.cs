@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FigureCollector : MonoBehaviour
@@ -12,7 +11,7 @@ public class FigureCollector : MonoBehaviour
     private int coutAnimals;
     private int coutFigure;
     private int coutColor;
-    private List<Vector3> combinations = new List<Vector3> { };
+    public List<Vector3> combinations = new List<Vector3> { };
     private void Awake()
     {
         coutFigure = figurePrefabs.Length;
@@ -67,12 +66,11 @@ public class FigureCollector : MonoBehaviour
     }
     public void RerollFigure(List<GameObject> prefList)
     {
-        System.Random rng = new System.Random();
         int n = prefList.Count;
 
         while (n > 1)
         {
-            int k = rng.Next(n--);
+            int k = Random.Range(0, n--);
             GameObject value = prefList[n];
             prefList[n] = prefList[k];
             prefList[k] = value;

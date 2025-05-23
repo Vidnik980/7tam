@@ -9,13 +9,13 @@ public class Spawner : MonoBehaviour
 
     private List<GameObject> figures;
     private bool isMixing;
-    private void OnEnable()
+    private void Start()
     {
-        Item—ollector.instance.collect += TakeFigure;
+        Item—ollector.instance.onCollect += TakeFigure;
     }
-    public void TakeFigure(GameObject item)
+    public void TakeFigure(Figure item)
     {
-        figures.Remove(item);
+        figures.Remove(item.gameObject);
         if(figures.Count == 0)
         {
             PanelManager.instance.OpenPanel("ResultWin");
@@ -51,6 +51,6 @@ public class Spawner : MonoBehaviour
     }
     private void OnDisable()
     {
-        Item—ollector.instance.collect -= TakeFigure;
+        Item—ollector.instance.onCollect -= TakeFigure;
     }
 }

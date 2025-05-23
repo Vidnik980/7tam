@@ -5,10 +5,11 @@ using UnityEngine;
 public class Item—ollector : MonoBehaviour
 {
     [SerializeField] private Transform[] slots = new Transform[7];
-    [SerializeField] private GameObject[] prefabsInSlotOccupied = new GameObject[7];
+    [SerializeField] private Figure[] collectedItems = new Figure[7];
 
-    public event Action<GameObject> collect;
+    public event Action<Figure> onCollect;
     public static Item—ollector instance;
+
     private void Awake()
     {
         instance = this;
@@ -18,24 +19,27 @@ public class Item—ollector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            TryGetFigure();
+        }
+    }
+    private void TryGetFigure()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-            if (hit.collider != null)
+        if (hit.collider != null)
+        {
+            if (hit.collider.TryGetComponent(out Figure figure))
             {
-                if(hit.collider.TryGetComponent(out Figure figure))
+                if (figure.enabled == true)
                 {
-                    if(figure.enabled == true)
-                    {
-                        figure.enabled = false;
-                        GameObject item = hit.collider.gameObject;
-                        MoveItemToSlot(item);
-                    }
+                    figure.enabled = false;
+                    MoveItemToSlot(figure);
                 }
             }
         }
     }
 
-    private void MoveItemToSlot(GameObject item)
+    private void MoveItemToSlot(Figure item)
     {
         int freeSlotIndex = GetFreeSlotIndex();
         if (freeSlotIndex == -1)
@@ -44,18 +48,18 @@ public class Item—ollector : MonoBehaviour
             return;
         }
 
-        prefabsInSlotOccupied[freeSlotIndex] = item;
+        collectedItems[freeSlotIndex] = item;
         item.GetComponent<Collider2D>().isTrigger = true;
         item.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         item.transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.InOutSine);
         item.transform.DOMove(slots[freeSlotIndex].position, 0.5f).SetEase(Ease.InOutSine);
-        collect?.Invoke(item);
+        onCollect?.Invoke(item);
     }
     private int GetFreeSlotIndex()
     {
-        for (int i = 0; i < prefabsInSlotOccupied.Length; i++)
+        for (int i = 0; i < collectedItems.Length; i++)
         {
-            if (!prefabsInSlotOccupied[i])
+            if (!collectedItems[i])
                 return i;
         }
         return -1;

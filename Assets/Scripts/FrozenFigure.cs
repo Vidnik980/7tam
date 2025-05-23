@@ -11,12 +11,9 @@ public class FrozenFigure : MonoBehaviour
         spriteRenderer.color = Color.blue;
         GetComponent<Figure>().enabled = false;
         snowflake.SetActive(true);
+        Item—ollector.instance.onCollect += SnowflakeRemoval;
     }
-    private void OnEnable()
-    {
-        Item—ollector.instance.collect += SnowflakeRemoval;
-    }
-    private void SnowflakeRemoval(GameObject item)
+    private void SnowflakeRemoval(Figure item)
     {
         freezeNumber--;
         if (freezeNumber == 0)
@@ -33,6 +30,6 @@ public class FrozenFigure : MonoBehaviour
     }
     private void OnDisable()
     {
-        Item—ollector.instance.collect -= SnowflakeRemoval;
+        Item—ollector.instance.onCollect -= SnowflakeRemoval;
     }
 }

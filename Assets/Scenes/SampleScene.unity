@@ -1876,6 +1876,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e473d1d33e118ff4da22e3b7e8ba8685, type: 3}
   - {fileID: 21300000, guid: a4c83c430df46cd4e939bdd869e5277b, type: 3}
   folderForFigure: {fileID: 1391036897}
+  combinations: []
 --- !u!1 &855553813
 GameObject:
   m_ObjectHideFlags: 0
@@ -3231,6 +3232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundBubble: {fileID: 124887923}
   figures: []
+  delayAnimationDead: 0.2
 --- !u!114 &1349556122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3251,7 +3253,7 @@ MonoBehaviour:
   - {fileID: 855553814}
   - {fileID: 408435714}
   - {fileID: 1218183788}
-  prefabsInSlotOccupied:
+  collectedItems:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
